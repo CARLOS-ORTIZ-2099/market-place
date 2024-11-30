@@ -8,7 +8,6 @@ export const addToCart = async (req, res, next) => {
     const { id } = req.params;
     const user = req.user;
     const { quantity } = req.body;
-    console.log(quantity);
 
     const [item, product] = await Promise.all([
       ItemModel.findOne({ product: id, user: user.id }),
@@ -61,7 +60,6 @@ export const removeCartProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const user = req.user;
-    console.log(user.id);
 
     const productDeleted = await ItemModel.findOneAndDelete({
       _id: id,
@@ -83,7 +81,6 @@ export const updateCart = async (req, res, next) => {
     const { idItem } = req.params;
     const user = req.user;
     const { quantity } = req.body;
-    console.log(quantity);
 
     const pedido = await ItemModel.findById({ _id: idItem }).populate(
       "product"
@@ -124,7 +121,6 @@ export const updateCart = async (req, res, next) => {
 export const showCartItems = async (req, res, next) => {
   try {
     const user = req.user;
-    //console.log(user);
     const response = await ItemModel.find({ user: user.id }).populate(
       "product"
     );
@@ -217,8 +213,6 @@ export const addToFavorite = async (req, res, next) => {
   let { id } = req.params;
   let user = req.user;
   let body = req.body;
-  console.log(id);
-  console.log(body);
 
   try {
     const favourite = await FavoriteModel.findOne({
@@ -227,19 +221,15 @@ export const addToFavorite = async (req, res, next) => {
     });
 
     if (!favourite && body.action === "crear") {
-      console.log("entro a crear");
-
       const createdFavourited = new FavoriteModel({
         product: id,
         user: user.id,
       });
-      //console.log(createdFavourited);
 
       await createdFavourited.save();
       return res.status(201).send({ createdFavourited });
     }
     if (favourite && body.action === "eliminar") {
-      //console.log("entro a eliminar");
       const deletedFavourite = await FavoriteModel.deleteOne({
         product: id,
         user: user.id,
@@ -278,7 +268,6 @@ export const getAllUserFavourites = async (req, res, next) => {
       select: "images brand name price coin",
       options: { slice: { images: 1 } },
     });
-    //console.log(favouritesFound);
     const favouritesRemain = [];
     const favouritesDelete = [];
 

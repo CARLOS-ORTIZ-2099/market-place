@@ -15,7 +15,6 @@ export const createProduct = async (req, res, next) => {
       const { secure_url, public_id } = await uploadStream(processedImage);
       store.push({ secure_url, public_id, id: public_id });
     }
-    //console.log(store)
 
     const newProduct = new ProductModel({
       ...body,
@@ -26,7 +25,6 @@ export const createProduct = async (req, res, next) => {
 
     res.status(201).send({ message: "product created" });
   } catch (err) {
-    console.log("entro".red);
     next(err);
   }
 };
@@ -69,14 +67,12 @@ export const updateProduct = async (req, res, next) => {
       const { secure_url, public_id } = await uploadStream(ele.buffer);
       store.push({ secure_url, public_id, id: public_id });
     }
-    //console.log(store);
 
     if (body.photosDelete) {
       const imagesDelete = [];
       for (let photo of JSON.parse(body.photosDelete)) {
         imagesDelete.push(photo.public_id);
       }
-      console.log(imagesDelete);
       imagesDelete.length > 0 && (await deleteAllImage(imagesDelete));
     }
 
@@ -84,11 +80,8 @@ export const updateProduct = async (req, res, next) => {
       ? [...JSON.parse(body.photosRemaind), ...store]
       : [...store];
 
-    //console.log(newImages);
-
     delete body["photosDelete"];
     delete body["photosRemaind"];
-    //console.log(body)
 
     const resp = await ProductModel.findOneAndUpdate(
       { _id: id, seller: user.id },
@@ -107,7 +100,6 @@ export const updateProduct = async (req, res, next) => {
 export const getAllProducts = async (req, res, next) => {
   try {
     const id = req.params.id;
-    //console.log(id);
 
     if (id) {
       const productsFoundUser = await ProductModel.find(
@@ -150,7 +142,6 @@ export const getOneProduct = async (req, res, next) => {
       "seller"
     );
     if (!productFound) return next(new MyError("no se encontro producto", 404));
-    console.log(productFound);
     res.send({ product: productFound });
   } catch (err) {
     next(err);

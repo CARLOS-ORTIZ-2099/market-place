@@ -12,12 +12,10 @@ let fileStorage;
 const configMulter = {
   storage: (fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-      //console.log(file);
       cb(null, location);
     },
 
     filename: function (req, file, cb) {
-      //console.log(file);
       cb(null, uid.rnd() + "-" + file.originalname);
     },
   })),
@@ -61,7 +59,6 @@ export const multerMidManyImages = function (req, res, next) {
         .status(400)
         .send({ image: "la imagen debe ser de maximo 1mb" });
     } else if (err?.code === "LIMIT_UNEXPECTED_FILE") {
-      console.log(err.name);
       return res
         .status(400)
         .send({ image: "el numero de imagenes permitidos es 5" });

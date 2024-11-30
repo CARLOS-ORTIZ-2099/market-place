@@ -13,7 +13,6 @@ export const register = async (req, res, next) => {
     await user.save();
     res.status(201).send({ message: "register successfully" });
   } catch (error) {
-    console.log("entroo");
     next(error);
   }
 };
@@ -56,7 +55,6 @@ export const login = async (req, res, next) => {
       })
       .send({ user: user, token });
   } catch (error) {
-    console.log("entroo");
     next(error);
   }
 };
@@ -68,7 +66,6 @@ export const closeSession = async (req, res, next) => {
 export const verifyToken = async (req, res, next) => {
   try {
     const token = req.cookies["token-market"];
-    //console.log(token);
     if (!token) {
       return next(new MyError("usuario no autenticado", 404));
     }
@@ -88,7 +85,6 @@ export const verifyToken = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   try {
     const { file } = req;
-    //console.log(file);
     const { body } = req;
     const { id } = req.params;
     const userFound = await UserModel.findById({ _id: id });

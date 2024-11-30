@@ -1,9 +1,4 @@
 import mongoose from "mongoose";
-import colors from "colors";
-
-/* console.log("modo".magenta, process.env.NODE_ENV);
-console.log("mongo atlas".cyan, process.env.MONGO_URI);
-console.log("mongo local".red, process.env.URI_DEV); */
 
 export async function db() {
   try {
@@ -13,7 +8,7 @@ export async function db() {
         ? process.env.MONGO_URI
         : process.env.URI_DEV
     );
-    console.log(`connected successfully to db`.cyan);
+    console.log(`connected successfully to db`);
   } catch (error) {
     console.log(`error unexpected to connected to DB ${err}`);
     process.exit(1);
